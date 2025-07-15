@@ -5,6 +5,13 @@ It provides APIs for businesses to upload their internal documents, and a smart 
 
 ---
 
+## Contribution
+
+I’d be really happy to see you join the development of this project!
+Whether it’s sharing ideas, reporting bugs, or writing some code — your contributions are truly appreciated ❤️
+
+---
+
 ## 🚀 Features
 
 - ✅ Real-time chat via **Django Channels (WebSockets)**
