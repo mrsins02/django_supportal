@@ -1,7 +1,7 @@
-# 🧠 Supportal – AI-Powered Business Support Chat
+# 🧠 Django Supportal – AI-Powered Business Support Chat APIs for django projects
 
-**Supportal** is an intelligent, AI-powered customer support system built with **Django**, **Django Channels**, and **OpenAI API**.  
-It allows businesses to upload their internal documents, and a smart assistant will handle customer inquiries via live chat – powered by a Retrieval-Augmented Generation (RAG) system.
+**Django Supportal** is an intelligent, AI-powered customer support system built with **Django**, **Django Channels**, and **OpenAI API**.  
+It provides APIs for businesses to upload their internal documents, and a smart assistant will handle customer inquiries via live chat – powered by a Retrieval-Augmented Generation (RAG) system.
 
 ---
 
@@ -46,7 +46,6 @@ Supportal uses a **Retrieval-Augmented Generation (RAG)** approach to enable AI 
 - **Realtime Layer:** Redis (via `channels_redis`)
 - **AI Engine:** OpenAI API (GPT + Embeddings)
 - **Vector DB:** FAISS (in-memory vector search)
-- **Dockerized:** Ready-to-run via Docker Compose
 
 ---
 
@@ -54,23 +53,16 @@ Supportal uses a **Retrieval-Augmented Generation (RAG)** approach to enable AI 
 
 ### 🔧 Prerequisites
 
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/)
-- An OpenAI API key
+- Django 4.2.2
+- Channels
+- Celery
+- Redis
+- OpenAI API key
 
 ### 🧪 Installation
 
 ```bash
-# 1. Clone the project
-git clone git@github.com:mrsins02/supportal.git
-cd supportal
-
-# 2. Set up environment variables
-cp .env.dist .env
-# → then open .env and set your env vars
-
-# 3. Build and run the services
-docker compose up -d --build
+Installation guide will be added after publish to pypi
 ```
 
 ## 📄 License
