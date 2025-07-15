@@ -30,6 +30,10 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
 packages = [{include = "django_supportal"}]
+include = [
+    "django_supportal/templates/**/*",
+    "django_supportal/static/**/*",
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
