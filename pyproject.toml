@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "django_supportal"
-version = "1.0.2"
+version = "1.0.3"
 description = "AI-Powered business support chat system for django"
 authors = ["Amin Dehghan Dehnavi <amin.dehghandehnavi@gmail.com>"]
 license = "MIT"
@@ -37,7 +37,7 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-django = "^4.2,<6.0"
+django = ">=4.2,<6.0"
 channels = "^4.0.0"
 channels-redis = "^4.2.0"
 djangorestframework = "^3.14.0"
