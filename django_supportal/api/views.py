@@ -22,6 +22,7 @@ from .serializers import (
     DocumentSerializer,
 )
 
+
 logger = logging.getLogger("django_supportal")
 
 
@@ -149,7 +150,7 @@ def create_chat_session(request, business_id):
             )
 
         except Exception as e:
-            logger.error(f"error creating chat session: {str(e)}")
+            logger.error(f"error creating chat session: {e!s}")
             return JsonResponse(
                 data={"error": _("Failed to create chat session")},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,

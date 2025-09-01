@@ -1,27 +1,25 @@
 import logging
 
-from typing import Dict, List
-
-import openai
-
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from openai import OpenAI
 
 from ..settings import SUPPORTAL_SETTINGS
+
 
 logger = logging.getLogger("django_supportal")
 
 
 class AIService:
     def __init__(self):
-        openai.api_key = SUPPORTAL_SETTINGS["OPENAI_API_KEY"]
+        self.client = OpenAI(api_key=SUPPORTAL_SETTINGS["OPENAI_API_KEY"])
         self.model = SUPPORTAL_SETTINGS["OPENAI_MODEL"]
         self.embedding_model = SUPPORTAL_SETTINGS["OPENAI_EMBEDDING_MODEL"]
         self.max_tokens = SUPPORTAL_SETTINGS["MAX_TOKENS"]
         self.temperature = SUPPORTAL_SETTINGS["TEMPERATURE"]
 
     async def generate_response(
-        self, messages: List[Dict[str, str]], context: str = ""
+        self, messages: list[dict[str, str]], context: str = ""
     ) -> str:
         """generate ai response using openai chat completion"""
         try:
@@ -29,7 +27,7 @@ class AIService:
 
             full_messages = [{"role": "system", "content": system_prompt}] + messages
 
-            response = await openai.ChatCompletion.acreate(
+            response = self.client.chat.completions.create(
                 model=self.model,
                 messages=full_messages,
                 max_tokens=self.max_tokens,
@@ -38,18 +36,22 @@ class AIService:
 
             return response.choices[0].message.content
         except Exception as e:
-            logger.error(f"error generating ai response: {str(e)}")
-            return _(
-                "Sorry, I'm having trouble processing your request right now. please try again"
+            logger.error(f"error generating ai response: {e!s}")
+            return str(
+                _(
+                    "Sorry, I'm having trouble processing your request right now. please try again"
+                )
             )
 
-    def generate_embedding(self, text: str) -> List[float]:
+    def generate_embedding(self, text: str) -> list[float]:
         """generate embedding for text using openai embeddings"""
         try:
-            response = openai.Embedding.create(model=self.embedding_model, input=text)
-            return response["data"][0]["embedding"]
+            response = self.client.embeddings.create(
+                model=self.embedding_model, input=text
+            )
+            return response.data[0].embedding
         except Exception as e:
-            logger.error(f"error generating embedding: {str(e)}")
+            logger.error(f"error generating embedding: {e!s}")
             return []
 
     def _create_system_prompt(self, context: str) -> str:
@@ -64,7 +66,7 @@ class AIService:
 
         return base_prompt
 
-    async def batch_generate_embeddings(self, texts: List[str]) -> List[List[float]]:
+    def batch_generate_embeddings(self, texts: list[str]) -> list[list[float]]:
         """generate embeddings for multiple texts"""
         embeddings = []
         for text in texts:

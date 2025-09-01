@@ -2,6 +2,7 @@ import os
 
 from decouple import config
 
+
 # supportal configuration
 SUPPORTAL_SETTINGS = {
     "OPENAI_API_KEY": config("OPENAI_API_KEY", default=""),
@@ -30,10 +31,7 @@ SUPPORTAL_SETTINGS = {
 # channel layers configuration
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [SUPPORTAL_SETTINGS["REDIS_URL"]],
-        },
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
     },
 }
 
@@ -63,6 +61,7 @@ LOGGING = {
         "console": {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
+            "level": "DEBUG",
         },
         "file": {
             "class": "logging.handlers.RotatingFileHandler",
@@ -70,12 +69,13 @@ LOGGING = {
             "maxBytes": 1024 * 1024 * 5,  # 5mb
             "backupCount": 5,
             "formatter": "verbose",
+            "level": SUPPORTAL_SETTINGS["LOG_LEVEL"],
         },
     },
     "loggers": {
         "django_supportal": {
             "handlers": ["console", "file"],
-            "level": SUPPORTAL_SETTINGS["LOG_LEVEL"],
+            "level": "DEBUG",
             "propagate": False,
         },
     },
@@ -83,3 +83,5 @@ LOGGING = {
 
 # create logs directory if it doesn't exist
 os.makedirs("logs", exist_ok=True)
+os.makedirs("media", exist_ok=True)
+os.makedirs("vector_db", exist_ok=True)

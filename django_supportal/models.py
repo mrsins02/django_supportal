@@ -45,6 +45,10 @@ class Business(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    def active_chat_sessions_count(self):
+        """Return the count of active chat sessions for this business."""
+        return self.chat_sessions.filter(is_active=True).count()
+
 
 class Document(models.Model):
     business = models.ForeignKey(
@@ -90,6 +94,16 @@ class Document(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+    def trigger_processing(self):
+        """Trigger document processing task"""
+        from .tasks import process_document_task
+
+        try:
+            process_document_task.delay(self.id)
+            return True
+        except Exception:
+            return False
 
     def delete(self, *args, **kwargs):
         if self.file:
@@ -143,9 +157,9 @@ class ChatSession(models.Model):
 
 class ChatMessage(models.Model):
     class ChatMessageMessageTypesEnum(models.TextChoices):
-        USER = 1, _("User")
-        ASSISTANT = 1, _("Assistant")
-        SYSTEM = 1, _("System")
+        USER = "USER", _("User")
+        ASSISTANT = "ASSISTANT", _("Assistant")
+        SYSTEM = "SYSTEM", _("System")
 
     session = models.ForeignKey(
         ChatSession,
@@ -153,7 +167,8 @@ class ChatMessage(models.Model):
         related_name="messages",
         verbose_name=_("Session"),
     )
-    message_type = models.PositiveSmallIntegerField(
+    message_type = models.CharField(
+        max_length=20,
         choices=ChatMessageMessageTypesEnum.choices,
         verbose_name=_("Message Type"),
     )

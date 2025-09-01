@@ -6,21 +6,26 @@
     <title>Chat - {{ business.name }}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'django_supportal/css/chat.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            <h2>{{ business.name }}</h2>
-            <span class="status" id="connection-status">connecting...</span>
+            <h2><i class="fas fa-comments"></i> {{ business.name }}</h2>
+            <span class="status" id="connection-status">
+                <i class="fas fa-circle"></i> Connecting...
+            </span>
         </div>
         
         <div class="chat-messages" id="chat-messages">
-            <!-- messages will be added here -->
+            <!-- Messages will be added here -->
         </div>
         
         <div class="chat-input">
-            <input type="text" id="message-input" placeholder="type your message..." autocomplete="off">
-            <button id="send-button">send</button>
+            <input type="text" id="message-input" placeholder="Type your message..." autocomplete="off">
+            <button id="send-button">
+                <i class="fas fa-paper-plane"></i>
+            </button>
         </div>
     </div>
 
